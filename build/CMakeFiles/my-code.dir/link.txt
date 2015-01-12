@@ -1,0 +1,6 @@
+/usr/bin/powerpc-wrs-vxworks-g++    -nostdlib -r -Wl,-X -static   CMakeFiles/my-code.dir/main.cpp.obj -o my-code_PartialImage.out  /usr/powerpc-wrs-vxworks/lib/libwpilib.a   -lsupc++ -lstdc++ -lgcc
+powerpc-wrs-vxworks-munch my-code_ctdt.c my-code_PartialImage.out
+/usr/bin/powerpc-wrs-vxworks-gcc  -c my-code_ctdt.c -o my-code_ctdt.c.o -mcpu=603 -mstrict-align -mlongcall -nostdlib -Wall  -DCPU=PPC603 -DTOOL_FAMILY=gnu -DTOOL=gnu -D_WRS_KERNEL
+/usr/bin/powerpc-wrs-vxworks-g++      my-code_PartialImage.out my-code_ctdt.c.o -o my-code -nostdlib -r -Wl,-X -static -T "/usr/powerpc-wrs-vxworks/share/ldscripts/dkm.ld"
+powerpc-wrs-vxworks-stripsyms my-code "/usr/powerpc-wrs-vxworks/lib/libstdc++.a" "/usr/powerpc-wrs-vxworks/lib/libsupc++.a" "/usr/lib/gcc/powerpc-wrs-vxworks/4.8.2/libgcc.a"
+/usr/bin/cmake -E remove my-code_PartialImage.out my-code_ctdt.c my-code_ctdt.c.o
