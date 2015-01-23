@@ -9,10 +9,6 @@ class Robot: public IterativeRobot {
 	Talon *spindle 		= new Talon(4);
 	Talon *grip 		= new Talon(5);
 
-	float brakeRotate = -0.2;
-
-
-
 	CameraServer *server = CameraServer::GetInstance();
 	float camrot = 0.75f;
 private:
@@ -40,17 +36,10 @@ private:
 		camrot = camrot + ((float) rstick->GetRawButton(3))*0.01 - ((float) rstick->GetRawButton(2))*0.01;
 		cam_motor->Set(camrot);
 		robot->MecanumDrive_Cartesian(rstick->GetX(), rstick->GetY(), (float) rstick->GetRawButton(4)-(float) rstick->GetRawButton(5));
-		spindle->Set(lstick->GetY());
 		grip->Set(((float) lstick->GetRawButton(3))-((float) lstick->GetRawButton(2)));
-		if(!(rstick->GetButton(1))){
-
-
-
-		}else{
-			spindle->SetSpeed(brakeRotate);
-
+		if((rstick->GetButton(1))){
+			spindle->Set(-lstick->GetY());
 		}
-
 	}
 	void TestPeriodic() {
 		lw->Run();
