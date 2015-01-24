@@ -37,7 +37,7 @@ private:
 		cam_motor->Set(camrot);
 		robot->MecanumDrive_Cartesian(rstick->GetX(), rstick->GetY(), (float) rstick->GetRawButton(4)-(float) rstick->GetRawButton(5));
 		grip->Set(((float) lstick->GetRawButton(3))-((float) lstick->GetRawButton(2)));
-		if((rstick->GetButton(1))){
+		if(rstick->GetTrigger()){
 			spindle->Set(-lstick->GetY());
 		}
 	}
