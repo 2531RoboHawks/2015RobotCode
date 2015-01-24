@@ -35,9 +35,11 @@ private:
 	void TeleopPeriodic() {
 		camrot = camrot + ((float) rstick->GetRawButton(3))*0.01 - ((float) rstick->GetRawButton(2))*0.01;
 		cam_motor->Set(camrot);
-		robot->MecanumDrive_Cartesian(rstick->GetX(), rstick->GetY(), (float) rstick->GetRawButton(4)-(float) rstick->GetRawButton(5));
+		robot->MecanumDrive_Cartesian((float) rstick->GetRawButton(4)-(float) rstick->GetRawButton(5),
+				rstick->GetX(), rstick->GetY());
 		grip->Set(((float) lstick->GetRawButton(3))-((float) lstick->GetRawButton(2)));
 		if(rstick->GetTrigger()){
+
 			spindle->Set(-lstick->GetY());
 		}
 	}
