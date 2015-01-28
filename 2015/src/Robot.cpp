@@ -14,12 +14,12 @@ class Robot: public IterativeRobot {
 	Servo *ultra_motor  = new Servo(7);
 
 	//Ultrasonic object & variables
-	AnalogInput *ultra = new AnalogInput(3);
+	AnalogInput *ultra  = new AnalogInput(3);
 	float vpi = 5.0/512;
 	float distance = 0.0f;
 
 	//Camera output & variables
-	CameraServer *server = CameraServer::GetInstance();
+	CameraServer *serv  = CameraServer::GetInstance();
 	float camrot = 0.5f;
 private:
 	LiveWindow *lw;
@@ -28,8 +28,8 @@ private:
 		lw = LiveWindow::GetInstance();
 
 		//Begin camera stream
-		server->SetQuality(50);
-		server->StartAutomaticCapture("cam1");
+		serv->SetQuality(50);
+		serv->StartAutomaticCapture("cam1");
 	}
 
 	void AutonomousInit() {
