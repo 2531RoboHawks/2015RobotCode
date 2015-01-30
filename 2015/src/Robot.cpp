@@ -64,6 +64,12 @@ private:
 
 			spindle->Set(-lstick->GetY());
 		}
+		//Read and transmit ultrasonic data
+		distance = ultra->GetAverageVoltage()/vpi;
+		SmartDashboard::PutNumber("Distance:",distance);
+
+		//Move ultrasonic servo
+		ultra_motor->Set(0.01*distance);
 	}
 	void TestPeriodic() {
 		lw->Run();
