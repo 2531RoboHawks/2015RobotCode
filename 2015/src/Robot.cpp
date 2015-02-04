@@ -13,10 +13,6 @@ class Robot: public IterativeRobot {
 	Talon *grip 		= new Talon(6);
 	Servo *cam_motor 	= new Servo(7);
 
-	//Ultrasonic object & variables
-	AnalogInput *ultra= new AnalogInput(3);
-	float vpi = 5.0 / 512;
-
 	//Camera output & variables
 	CameraServer *server = CameraServer::GetInstance();
 	float camrot = 0.1f;
