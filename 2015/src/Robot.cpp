@@ -19,7 +19,7 @@ class Robot: public IterativeRobot {
 	Servo *ultra_motor 	= new Servo(8);
 
 	//Ultrasonic object & variables
-	AnalogInput *ultra 	= new AnalogInput(3);
+	AnalogInput *ultra= new AnalogInput(3);
 	float vpi = 5.0 / 512;
 	float distance[10];
 	float reverseVoltage = 0.0;
