@@ -8,10 +8,10 @@ class Robot: public IterativeRobot {
 
 	//Motor controllers
 	RobotDrive *robot 	= new RobotDrive(0, 1, 2, 3);
-	Talon *spindleA 	= new Talon(4);
-	Talon *spindleB		= new Talon(5);
-	Talon *grip 		= new Talon(6);
-	Servo *cam_motor 	= new Servo(7);
+	Talon *spindleA 	= new CANTalon(1);
+	Talon *spindleB		= new CANTalon(2);
+	Talon *grip 		= new CANTalon(3);
+	Servo *cam_motor 	= new Servo(4);
 
 	//Camera output & variables
 	CameraServer *server = CameraServer::GetInstance();
