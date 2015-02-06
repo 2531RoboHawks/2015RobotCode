@@ -81,10 +81,6 @@ private:
 		if (lstick->GetTrigger()) {
 			spindleA->Set(pow(-lstick->GetY(),3));
 			spindleB->Set(pow(-lstick->GetY(),3));
-		} else {
-			spindleA->Set(0);
-			spindleB->Set(0);
-
 		}
 	}
 
