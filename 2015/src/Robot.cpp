@@ -8,14 +8,14 @@ class Robot: public IterativeRobot {
 
 	//Motor controllers
 	RobotDrive *robot 	= new RobotDrive(0, 1, 2, 3);
-	Talon *spindleA 	= new CANTalon(1);
-	Talon *spindleB		= new CANTalon(2);
-	Talon *grip 		= new CANTalon(3);
+	CANTalon *spindleA 	= new CANTalon(2);
+	CANTalon *spindleB	= new CANTalon(3);
+	CANTalon *grip 		= new CANTalon(1);
 	Servo *cam_motor 	= new Servo(4);
 
 	//Camera output & variables
 	CameraServer *server = CameraServer::GetInstance();
-	float camrot = 0.1f;
+	float camrot 		= 0.1f;
 	//enviroment/autonomous variables.
 	int position;
 
@@ -27,9 +27,10 @@ private:
 
 		//Set camera position
 		cam_motor->Set(camrot);
+
 		//Begin camera stream
 		server->SetQuality(50);
-		server->StartAutomaticCapture("cam1");
+		server->StartAutomaticCapture("cam2");
 	}
 
 	void AutonomousInit() {
