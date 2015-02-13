@@ -34,23 +34,25 @@ private:
 	}
 
 	void AutonomousInit() {
-		//Clamp tote
+		//Clamp tote and raise it
 		grip->Set(1.0);
 		Wait(.25);
 		grip->Set(0);
-		spindleA->Set(1);
-		spindleB->Set(1);
-		robot->MecanumDrive_Cartesian(1,0,0);
-		Wait(1.50);
-		spindleA->Set(0);
-		spindleB->Set(0);
-		Wait(.50);
+		spindleA->Set(0.1f);
+		spindleB->Set(0.1f);
+		Wait(0.5f);
+		spindleA->Set(0.05);
+		spindleB->Set(0.05);
+		//Turn and drive to the center
+		robot->MecanumDrive_Cartesian(0,0.2f,0);
+		Wait(1.0f);
+		robot->MecanumDrive_Cartesian(0,0,0.5f);
+		Wait(3);
 		robot->MecanumDrive_Cartesian(0,0,0);
+		//Drop tote
 		grip->Set(-1.0);
 		Wait(.25);
 		grip->Set(0);
-
-
 	}
 
 	void AutonomousPeriodic() {
@@ -70,7 +72,7 @@ private:
 		//Drive the robot with mecanum drive
 		//RSTICK X is strafe, RSTICK buttons 4 & 5 are rotation, RSTICK Y is f/b
 		robot->MecanumDrive_Cartesian(pow(rstick->GetX(), 3), //curved for precision control
-				-pow(lstick->GetX(),3), -pow(rstick->GetY(),3));
+				-pow(lstick->GetX(),3), -rstick->GetY());
 
 		//Control the forklift's grip actuator TEMPORARY
 		grip->Set(
