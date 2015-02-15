@@ -17,7 +17,8 @@ class Robot: public IterativeRobot {
 	CameraServer *server = CameraServer::GetInstance();
 	float camrot 		= 0.1f;
 	//enviroment/autonomous variables.
-	int position;
+	int step;
+	float t = 0;
 
 private:
 	LiveWindow *lw;
@@ -34,29 +35,63 @@ private:
 	}
 
 	void AutonomousInit() {
-		//Clamp tote and raise it
-		grip->Set(1.0);
-		Wait(.25);
-		grip->Set(0);
-		spindleA->Set(0.1f);
-		spindleB->Set(0.1f);
-		Wait(0.5f);
-		spindleA->Set(0.05);
-		spindleB->Set(0.05);
-		//Turn and drive to the center
-		robot->MecanumDrive_Cartesian(0,0.2f,0);
-		Wait(1.0f);
-		robot->MecanumDrive_Cartesian(0,0,0.5f);
-		Wait(3);
-		robot->MecanumDrive_Cartesian(0,0,0);
-		//Drop tote
-		grip->Set(-1.0);
-		Wait(.25);
-		grip->Set(0);
+		t = 0.0f; //don't smash Peter's legs
+		step = 0; //Always start with step zero
 	}
 
 	void AutonomousPeriodic() {
-
+		switch (step) {
+		case 0:					//First grip the tote
+			grip->Set(-1.0f);
+			if (t>1.25f) {
+				t = 0;
+				step = step+1;
+			}
+			break;
+		case 1:					//Then lift it
+			grip->Set(0);
+			spindleA->Set(-0.3f);
+			spindleB->Set(-0.3f);
+			if (t>0.75f) {
+				t = 0;
+				step = step+1;
+			}
+			break;
+		case 2:					//Turn to the center
+			spindleA->Set(-0.05f);
+			spindleB->Set(-0.05f);
+			robot->MecanumDrive_Cartesian(0.0f,-0.4f,0);
+			if (t>1.0f) {
+				t = 0;
+				step = step+1;			}
+			break;
+		case 3:					//Drive forward
+			robot->MecanumDrive_Cartesian(0,0.0,0.5);
+			if (t>2.5) {
+				t = 0;
+				step = step+1;
+			}
+			break;
+		case 4:					//Release the tote
+			grip->Set(1.0f);
+			if (t>1) {
+				t = 0;
+				step = step+1;
+			}
+			break;
+		case 5:					//Reverse, to prove it's dropped
+			grip->Set(0);
+			robot->MecanumDrive_Cartesian(0,0,-.25);
+			if (t>0.5f) {
+				t = 0;
+				step = step+1;
+			}
+			break;
+		}
+		SmartDashboard::PutNumber("Time:",t);
+		SmartDashboard::PutNumber("Step:",step);
+		t = t+0.05;
+		Wait(0.05);
 	}
 
 	void TeleopInit() {
