@@ -61,13 +61,13 @@ private:
 			spindleA->Set(-0.05f);
 			spindleB->Set(-0.05f);
 			robot->MecanumDrive_Cartesian(0.0f,-0.4f,0);
-			if (t>1.0f) {
+			if (t>1.1f) {
 				t = 0;
 				step = step+1;			}
 			break;
 		case 3:					//Drive forward
 			robot->MecanumDrive_Cartesian(0,0.0,0.5);
-			if (t>2.5) {
+			if (t>1.8) {
 				t = 0;
 				step = step+1;
 			}
