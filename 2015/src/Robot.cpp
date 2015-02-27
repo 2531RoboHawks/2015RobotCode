@@ -13,6 +13,14 @@ class Robot: public IterativeRobot {
 	CANTalon *grip 		= new CANTalon(1);
 	Servo *cam_motor 	= new Servo(4);
 
+	//Acuator and limit switch variables
+	AnalogInput *lim 	= new AnalogInput(0);
+	float aup			= 0;
+	float adown			= 0;
+	bool limit	 		= false;
+	bool up 			= false;
+	bool down 			= false;
+	float power 		= 0.3f;
 	//Camera output & variables
 	CameraServer *server = CameraServer::GetInstance();
 	float camrot 		= 0.1f;
@@ -42,7 +50,7 @@ private:
 	void AutonomousPeriodic() {
 		switch (step) {
 		case 0:					//First grip the tote
-			grip->Set(-1.0f);
+			grip->Set(power);
 			if (t>1.25f) {
 				t = 0;
 				step = step+1;
@@ -73,7 +81,7 @@ private:
 			}
 			break;
 		case 4:					//Release the tote
-			grip->Set(1.0f);
+			grip->Set(power);
 			if (t>1) {
 				t = 0;
 				step = step+1;
@@ -88,8 +96,6 @@ private:
 			}
 			break;
 		}
-		SmartDashboard::PutNumber("Time:",t);
-		SmartDashboard::PutNumber("Step:",step);
 		t = t+0.05;
 		Wait(0.05);
 	}
@@ -109,11 +115,22 @@ private:
 		robot->MecanumDrive_Cartesian(pow(rstick->GetX(), 3), //curved for precision control
 				-pow(lstick->GetX(),3), -rstick->GetY());
 
-		//Control the forklift's grip actuator TEMPORARY
-		grip->Set(
-				((float) lstick->GetRawButton(3))
-						- ((float) lstick->GetRawButton(2)));
+		//Control the forklift's grip actuator
+		//3 is open and 2 is close
+		aup =   ((float) lstick->GetRawButton(2));
+		adown = ((float) lstick->GetRawButton(3));
+		limit = lim->GetVoltage()<4;
+		if (aup!=0)   		{ up = true; down = false; }
+		if (adown!=0) 		{ up = false; down = true; }
+		if (up&&limit) 		{ adown = 1; }
+		if (down&&limit)	{ aup = 1; }
+		grip->Set((aup - adown)*power);
 
+		SmartDashboard::PutNumber("AUP:",aup);
+		SmartDashboard::PutNumber("ADOWN:",adown);
+		SmartDashboard::PutNumber("Bool UP:",up);
+		SmartDashboard::PutNumber("Bool DOWN",down);
+		SmartDashboard::PutNumber("Bool LIMIT",limit);
 		//Control the forklift's vertical motion (LTRIGGER + LSTICK Y)
 		//todo: electronic braking
 		if (lstick->GetTrigger()) {
