@@ -81,20 +81,20 @@ private:
 			}
 			break;
 		case 4:					//Release the tote
-			grip->Set(power);
+			grip->Set(-power);
 			if (t>1) {
 				t = 0;
 				step = step+1;
 			}
 			break;
-		case 5:					//Reverse, to prove it's dropped
+		/*case 5:					//Reverse, to prove it's dropped
 			grip->Set(0);
 			robot->MecanumDrive_Cartesian(0,0,-.25);
 			if (t>0.5f) {
 				t = 0;
 				step = step+1;
 			}
-			break;
+			break;*/
 		}
 		t = t+0.05;
 		Wait(0.05);
